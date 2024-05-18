@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:ShoppingListApp.ViewModels"
+             x:Class="ShoppingListApp.Views.ShoppingListPage">
+
+    <ContentPage.BindingContext>
+        <local:ShoppingListViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Shopping List" 
+                   FontSize="Large"
+                   HorizontalOptions="Center" />
+
+            <ListView x:Name="ShoppingListView"
+                      ItemsSource="{Binding Items}"
+                      HasUnevenRows="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="{Binding Name}" 
+                                       VerticalOptions="Center" 
+                                       FontSize="Medium" />
+                                <Label Text="{Binding Quantity}" 
+                                       VerticalOptions="Center" 
+                                       FontSize="Medium" 
+                                       Margin="10,0,0,0"/>
+                                <Switch IsToggled="{Binding IsBought}" 
+                                        VerticalOptions="Center" 
+                                        Margin="10,0,0,0"
+                                        Toggled="OnItemToggled"/>
+                                <Button Text="Delete" 
+                                        Command="{Binding Path=BindingContext.DeleteItemCommand, Source={x:Reference ShoppingListView}}" 
+                                        CommandParameter="{Binding .}"
+                                        VerticalOptions="Center"
+                                        Margin="10,0,0,0"/>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <StackLayout Orientation="Horizontal" Padding="10">
+                <Entry x:Name="ItemNameEntry" 
+                       Placeholder="Item name" 
+                       HorizontalOptions="FillAndExpand"/>
+                <Entry x:Name="ItemQuantityEntry" 
+                       Placeholder="Quantity" 
+                       Keyboard="Numeric"
+                       WidthRequest="80"/>
+                <Button Text="Add" 
+                        Clicked="OnAddItemClicked"/>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
